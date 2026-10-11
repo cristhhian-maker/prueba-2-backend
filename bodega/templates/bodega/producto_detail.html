@@ -1,0 +1,140 @@
+{% extends 'bodega/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ producto.nombre }} - MusicPro{% endblock %}
+{% block page_heading %}Detalle del Producto{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Main Info Column -->
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="badge bg-light text-muted border mb-2">SKU: {{ producto.sku }}</span>
+                        <h2 class="fw-bold brand-font text-dark mb-1">{{ producto.nombre }}</h2>
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="badge bg-indigo-subtle text-primary border border-indigo-subtle">{{ producto.categoria.nombre }}</span>
+                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">{{ producto.marca.nombre }}</span>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <h3 class="fw-bold text-success mb-1">${{ producto.precio|intcomma }}</h3>
+                        {% if producto.sin_stock %}
+                            <span class="badge badge-stock-agotado px-3 py-1.5 rounded-pill fs-6">Agotado</span>
+                        {% elif producto.es_stock_bajo %}
+                            <span class="badge badge-stock-bajo px-3 py-1.5 rounded-pill fs-6">Stock Bajo</span>
+                        {% else %}
+                            <span class="badge badge-stock-normal px-3 py-1.5 rounded-pill fs-6">En Stock</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h5 class="fw-bold mb-2">Descripción</h5>
+                <p class="text-secondary mb-4">{{ producto.descripcion|default:"Sin descripción registrada." }}</p>
+
+                <div class="row g-3 bg-light rounded-4 p-3 border">
+                    <div class="col-6 col-sm-3">
+                        <small class="text-muted d-block fw-semibold">Stock Actual</small>
+                        <span class="fs-4 fw-bold text-dark">{{ producto.stock }}</span>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <small class="text-muted d-block fw-semibold">Stock Mínimo</small>
+                        <span class="fs-4 fw-bold text-secondary">{{ producto.stock_minimo }}</span>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <small class="text-muted d-block fw-semibold">Valoración Stock</small>
+                        <span class="fs-4 fw-bold text-primary">${{ producto.precio|mul:producto.stock|intcomma }}</span>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <small class="text-muted d-block fw-semibold">Estado</small>
+                        <span class="fs-6 fw-semibold text-success">{% if producto.activo %}Activo{% else %}Inactivo{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Movimientos de este producto -->
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold m-0 brand-font">Historial de Movimientos de Stock</h5>
+                <a href="{% url 'movimiento_create' %}?producto={{ producto.pk }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                    <i class="fa-solid fa-plus me-1"></i> Registrar Movimiento
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Cantidad</th>
+                                <th>Motivo / Observación</th>
+                                <th>Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in movimientos %}
+                                <tr>
+                                    <td class="text-muted small">{{ m.fecha|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        {% if m.tipo == 'INGRESO' %}
+                                            <span class="badge bg-success-subtle text-success">Entrada</span>
+                                        {% elif m.tipo == 'EGRESO' %}
+                                            <span class="badge bg-danger-subtle text-danger">Salida</span>
+                                        {% else %}
+                                            <span class="badge bg-info-subtle text-info">Ajuste</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-bold">{{ m.cantidad }}</td>
+                                    <td class="text-secondary">{{ m.motivo }}</td>
+                                    <td class="text-muted small">{{ m.usuario|default:"Sistema" }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        No hay movimientos registrados para este producto.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions Column -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 mb-4 text-center p-4">
+            {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded-4 mb-3 mx-auto" style="max-height: 250px; object-fit: contain;">
+            {% else %}
+                <div class="bg-light rounded-4 py-5 mb-3 text-muted">
+                    <i class="fa-solid fa-guitar fa-4x opacity-25 d-block mb-2"></i>
+                    <span>Sin imagen disponible</span>
+                </div>
+            {% endif %}
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'producto_update' producto.pk %}" class="btn btn-mp-primary rounded-pill py-2">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> Editar Producto
+                </a>
+                <a href="{% url 'movimiento_create' %}?producto={{ producto.pk }}" class="btn btn-outline-dark rounded-pill py-2">
+                    <i class="fa-solid fa-arrow-right-arrow-left me-2"></i> Ingreso / Egreso Stock
+                </a>
+                <a href="{% url 'producto_delete' producto.pk %}" class="btn btn-outline-danger rounded-pill py-2">
+                    <i class="fa-solid fa-trash me-2"></i> Eliminar Producto
+                </a>
+                <a href="{% url 'producto_list' %}" class="btn btn-light rounded-pill py-2 mt-2">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Volver al inventario
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

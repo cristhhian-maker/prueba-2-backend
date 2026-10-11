@@ -1,0 +1,28 @@
+{% extends 'bodega/base.html' %}
+
+{% block title %}Eliminar Producto - MusicPro{% endblock %}
+{% block page_heading %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4">
+            <div class="icon-box bg-danger-subtle text-danger mx-auto mb-3" style="width: 64px; height: 64px; font-size: 2rem;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h4 class="fw-bold brand-font text-dark mb-2">¿Eliminar producto?</h4>
+            <p class="text-muted mb-4">
+                Estás a punto de eliminar el producto <strong>"{{ producto.nombre }}"</strong> (SKU: {{ producto.sku }}).
+                Esta acción no se puede deshacer.
+            </p>
+            <form method="post" class="d-flex justify-content-center gap-3">
+                {% csrf_token %}
+                <a href="{% url 'producto_list' %}" class="btn btn-light rounded-pill px-4">Cancelar</a>
+                <button type="submit" class="btn btn-danger rounded-pill px-4">
+                    <i class="fa-solid fa-trash me-1"></i> Sí, Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

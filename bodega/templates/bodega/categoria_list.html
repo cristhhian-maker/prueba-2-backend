@@ -1,0 +1,78 @@
+{% extends 'bodega/base.html' %}
+
+{% block title %}Gestión de Categorías - MusicPro{% endblock %}
+{% block page_heading %}Categorías de Productos{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Formulario para agregar nueva categoría -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold m-0 brand-font"><i class="fa-solid fa-plus text-primary me-2"></i> Nueva Categoría</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre *</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Slug URL *</label>
+                        {{ form.slug }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Descripción</label>
+                        {{ form.descripcion }}
+                    </div>
+                    <button type="submit" class="btn btn-mp-primary w-100 rounded-pill py-2">
+                        <i class="fa-solid fa-save me-1"></i> Guardar Categoría
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Categorías -->
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold m-0 brand-font"><i class="fa-solid fa-tags text-indigo me-2"></i> Categorías Registradas</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Slug</th>
+                                <th>Descripción</th>
+                                <th>Productos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in categorias %}
+                                <tr>
+                                    <td class="fw-bold text-dark">{{ c.nombre }}</td>
+                                    <td><code>{{ c.slug }}</code></td>
+                                    <td class="text-secondary small">{{ c.descripcion|default:"-" }}</td>
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary rounded-pill">
+                                            {{ c.num_productos|default:0 }} productos
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No se han registrado categorías aún.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

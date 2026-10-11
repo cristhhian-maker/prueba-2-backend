@@ -1,0 +1,145 @@
+{% extends 'bodega/base.html' %}
+{% load humanize %}
+
+{% block title %}Inventario de Productos - MusicPro{% endblock %}
+{% block page_heading %}Inventario de Bodega{% endblock %}
+
+{% block content %}
+<!-- Search and Filter Bar -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <form method="get" class="row g-3">
+            <div class="col-12 col-md-4">
+                <label class="form-label small fw-semibold text-muted">Búsqueda</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="text" name="q" value="{{ query }}" class="form-control bg-light border-start-0" placeholder="SKU, Nombre o descripción...">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label small fw-semibold text-muted">Categoría</label>
+                <select name="categoria" class="form-select bg-light">
+                    <option value="">Todas las categorías</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if selected_cat == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label small fw-semibold text-muted">Marca</label>
+                <select name="marca" class="form-select bg-light">
+                    <option value="">Todas las marcas</option>
+                    {% for m in marcas %}
+                        <option value="{{ m.id }}" {% if selected_marca == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-100 rounded-pill">
+                    <i class="fa-solid fa-filter me-1"></i> Filtrar
+                </button>
+                <a href="{% url 'producto_list' %}" class="btn btn-light rounded-circle" title="Limpiar filtros">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Products Table -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold m-0 brand-font">Listado de Productos</h5>
+        <a href="{% url 'producto_create' %}" class="btn btn-mp-primary btn-sm rounded-pill px-3">
+            <i class="fa-solid fa-plus me-1"></i> Nuevo Producto
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-custom mb-0">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in page_obj %}
+                        <tr>
+                            <td class="fw-bold text-secondary">{{ p.sku }}</td>
+                            <td>
+                                <a href="{% url 'producto_detail' p.pk %}" class="text-decoration-none fw-semibold text-dark hover-primary">
+                                    {{ p.nombre }}
+                                </a>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">{{ p.categoria.nombre }}</span></td>
+                            <td><span class="badge bg-light text-dark border">{{ p.marca.nombre }}</span></td>
+                            <td class="fw-bold text-dark">${{ p.precio|intcomma }}</td>
+                            <td>
+                                <span class="fw-bold fs-6">{{ p.stock }}</span>
+                                <small class="text-muted d-block" style="font-size: 0.75rem;">Mín: {{ p.stock_minimo }}</small>
+                            </td>
+                            <td>
+                                {% if p.sin_stock %}
+                                    <span class="badge badge-stock-agotado px-2.5 py-1.5 rounded-pill"><i class="fa-solid fa-xmark me-1"></i> Agotado</span>
+                                {% elif p.es_stock_bajo %}
+                                    <span class="badge badge-stock-bajo px-2.5 py-1.5 rounded-pill"><i class="fa-solid fa-triangle-exclamation me-1"></i> Stock Bajo</span>
+                                {% else %}
+                                    <span class="badge badge-stock-normal px-2.5 py-1.5 rounded-pill"><i class="fa-solid fa-check me-1"></i> Normal</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <a href="{% url 'producto_detail' p.pk %}" class="btn btn-sm btn-light" title="Ver Detalles">
+                                        <i class="fa-solid fa-eye text-primary"></i>
+                                    </a>
+                                    <a href="{% url 'producto_update' p.pk %}" class="btn btn-sm btn-light" title="Editar">
+                                        <i class="fa-solid fa-pen-to-square text-secondary"></i>
+                                    </a>
+                                    <a href="{% url 'movimiento_create' %}?producto={{ p.pk }}" class="btn btn-sm btn-light" title="Registrar Movimiento">
+                                        <i class="fa-solid fa-boxes-packing text-success"></i>
+                                    </a>
+                                    <a href="{% url 'producto_delete' p.pk %}" class="btn btn-sm btn-light" title="Eliminar">
+                                        <i class="fa-solid fa-trash text-danger"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                <i class="fa-solid fa-box-open fa-3x mb-3 text-secondary opacity-50 d-block"></i>
+                                No se encontraron productos. Registra el primero o ajusta los filtros.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if page_obj.has_other_pages %}
+        <div class="card-footer bg-white border-0 py-3">
+            <nav>
+                <ul class="pagination justify-content-center m-0">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}&categoria={{ selected_cat }}&marca={{ selected_marca }}">Anterior</a></li>
+                    {% endif %}
+                    <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}&categoria={{ selected_cat }}&marca={{ selected_marca }}">Siguiente</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

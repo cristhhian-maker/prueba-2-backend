@@ -1,0 +1,66 @@
+{% extends 'bodega/base.html' %}
+
+{% block title %}Gestión de Marcas - MusicPro{% endblock %}
+{% block page_heading %}Marcas Registradas{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Formulario para agregar nueva marca -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold m-0 brand-font"><i class="fa-solid fa-plus text-primary me-2"></i> Nueva Marca</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre de la Marca *</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">País de Origen</label>
+                        {{ form.pais_origen }}
+                    </div>
+                    <button type="submit" class="btn btn-mp-primary w-100 rounded-pill py-2">
+                        <i class="fa-solid fa-save me-1"></i> Guardar Marca
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Marcas -->
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 px-4">
+                <h5 class="fw-bold m-0 brand-font"><i class="fa-solid fa-copyright text-indigo me-2"></i> Marcas en Sistema</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-custom mb-0">
+                        <thead>
+                            <tr>
+                                <th>Marca</th>
+                                <th>País de Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in marcas %}
+                                <tr>
+                                    <td class="fw-bold text-dark">{{ m.nombre }}</td>
+                                    <td><span class="badge bg-light text-dark border">{{ m.pais_origen|default:"No especificado" }}</span></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center py-4 text-muted">No hay marcas registradas aún.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
