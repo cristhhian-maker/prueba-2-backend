@@ -1,0 +1,63 @@
+{% extends 'bodega/base.html' %}
+{% load humanize %}
+{% block title %}Reporte 15 - Productos No Solicitados{% endblock %}
+{% block page_heading %}Reporte #15: Productos Sin Solicitudes de Sucursales{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <span class="badge bg-dark mb-1">Nivel Avanzado</span>
+    <h3 class="fw-bold brand-font mb-0">¿Qué productos no han sido solicitados por ninguna sucursal?</h3>
+    <small class="text-muted">Detección de productos de baja rotación o sin demanda en el canal de sucursales</small>
+  </div>
+  <a href="{% url 'reportes_index' %}" class="btn btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i> Volver a Reportes
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+    <h5 class="fw-bold text-secondary mb-0"><i class="fa-solid fa-circle-question me-2"></i>Artículos sin Rotación por Sucursal</h5>
+    <span class="badge bg-secondary">{{ productos.count }} producto(s) sin solicitudes</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-custom mb-0">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Stock Inmovilizado</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in productos %}
+          <tr>
+            <td class="fw-semibold">{{ p.sku }}</td>
+            <td class="fw-bold">{{ p.nombre }}</td>
+            <td><span class="badge bg-light text-dark border">{{ p.categoria.nombre }}</span></td>
+            <td>{{ p.marca.nombre }}</td>
+            <td>${{ p.precio|intcomma }}</td>
+            <td class="fw-bold">{{ p.stock }}</td>
+            <td>
+              {% if p.stock > 0 %}
+                <span class="badge badge-stock-bajo">Stock Parado</span>
+              {% else %}
+                <span class="badge badge-stock-agotado">Sin Stock</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center text-success py-4"><i class="fa-solid fa-check-circle me-1"></i> Excelente: Todos los productos han tenido solicitudes de sucursales.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

@@ -109,6 +109,17 @@ O de manera alternativa, use el script independiente de la raíz:
 python poblar.py
 
 ```
+""""# Cargar 100 usuarios (contraseña por defecto: test1234)
+python manage.py seed_users --cantidad 100
+
+# Cargar 500 usuarios
+python manage.py seed_users --cantidad 500
+
+# Cargar 500 usuarios con contraseña personalizada
+python manage.py seed_users --cantidad 500 --password miClave123
+
+# Cargar 200 usuarios, algunos con permiso de staff (1 de cada 10)
+python manage.py seed_users --cantidad 200 --staff""""""""""""""
 
 
 

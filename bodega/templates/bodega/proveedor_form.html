@@ -1,0 +1,60 @@
+{% extends 'bodega/base.html' %}
+{% block title %}{{ titulo }} - Bodega{% endblock %}
+{% block page_heading %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+        <h4 class="fw-bold brand-font mb-0">{{ titulo }}</h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Nombre *</label>
+              {{ form.nombre }}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">RUT</label>
+              {{ form.rut }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Persona de Contacto</label>
+              {{ form.contacto }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Teléfono</label>
+              {{ form.telefono }}
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Correo Electrónico</label>
+              {{ form.email }}
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Dirección</label>
+              {{ form.direccion }}
+            </div>
+            <div class="col-md-12">
+              <div class="form-check mt-2">
+                {{ form.activo }}
+                <label class="form-check-label fw-semibold ms-2">Activo</label>
+              </div>
+            </div>
+          </div>
+          {% if form.errors %}
+            <div class="alert alert-danger mt-3">{{ form.errors }}</div>
+          {% endif %}
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-mp-primary"><i class="fa-solid fa-floppy-disk me-1"></i> Guardar</button>
+            <a href="{% url 'proveedor_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

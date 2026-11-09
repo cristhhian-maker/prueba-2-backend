@@ -1,0 +1,109 @@
+{% extends 'bodega/base.html' %}
+{% load humanize %}
+{% block title %}Solicitudes - Bodega{% endblock %}
+{% block page_heading %}Solicitudes de Sucursales{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold brand-font mb-0">Solicitudes</h2>
+    <small class="text-muted">Gestión de requerimientos de sucursales</small>
+  </div>
+  <a href="{% url 'solicitud_create' %}" class="btn btn-mp-primary">
+    <i class="fa-solid fa-plus me-1"></i> Nueva Solicitud
+  </a>
+</div>
+
+<!-- Filtros -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body py-3 px-4">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold small">Estado</label>
+        <select name="estado" class="form-select form-select-sm">
+          <option value="">Todos los estados</option>
+          {% for val, label in estado_choices %}
+            <option value="{{ val }}" {% if selected_estado == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label fw-semibold small">Sucursal</label>
+        <select name="sucursal" class="form-select form-select-sm">
+          <option value="">Todas las sucursales</option>
+          {% for s in sucursales %}
+            <option value="{{ s.pk }}" {% if selected_sucursal == s.pk|stringformat:"s" %}selected{% endif %}>{{ s.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-mp-primary btn-sm w-100">
+          <i class="fa-solid fa-filter me-1"></i> Filtrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-0">
+    <table class="table table-custom mb-0">
+      <thead>
+        <tr>
+          <th>#</th><th>Sucursal</th><th>Fecha</th><th>Estado</th><th>Total Unidades</th><th>Registrado por</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sol in page_obj %}
+        <tr>
+          <td class="fw-semibold">#{{ sol.pk }}</td>
+          <td>{{ sol.sucursal.nombre }}</td>
+          <td>{{ sol.fecha|date:"d/m/Y H:i" }}</td>
+          <td>
+            {% if sol.estado == 'PENDIENTE' %}
+              <span class="badge badge-stock-bajo">{{ sol.get_estado_display }}</span>
+            {% elif sol.estado == 'APROBADA' %}
+              <span class="badge badge-stock-normal">{{ sol.get_estado_display }}</span>
+            {% elif sol.estado == 'RECHAZADA' %}
+              <span class="badge badge-stock-agotado">{{ sol.get_estado_display }}</span>
+            {% else %}
+              <span class="badge bg-primary text-white">{{ sol.get_estado_display }}</span>
+            {% endif %}
+          </td>
+          <td>{{ sol.total_items|default:0 }} uds.</td>
+          <td>{{ sol.usuario.username|default:"-" }}</td>
+          <td>
+            <a href="{% url 'solicitud_detail' sol.pk %}" class="btn btn-sm btn-outline-primary me-1">
+              <i class="fa-solid fa-eye"></i>
+            </a>
+            {% if sol.estado == 'PENDIENTE' %}
+            <a href="{% url 'solicitud_delete' sol.pk %}" class="btn btn-sm btn-outline-danger">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center text-muted py-4">No hay solicitudes registradas.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.has_other_pages %}
+  <div class="card-footer bg-white border-0 d-flex justify-content-center py-3">
+    <nav>
+      <ul class="pagination pagination-sm mb-0">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&estado={{ selected_estado }}&sucursal={{ selected_sucursal }}">«</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&estado={{ selected_estado }}&sucursal={{ selected_sucursal }}">»</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+

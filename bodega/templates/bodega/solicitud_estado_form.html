@@ -1,0 +1,41 @@
+{% extends 'bodega/base.html' %}
+{% block title %}Cambiar Estado - Solicitud #{{ solicitud.pk }}{% endblock %}
+{% block page_heading %}Gestionar Solicitud{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+        <h4 class="fw-bold brand-font mb-0">Cambiar Estado — Solicitud #{{ solicitud.pk }}</h4>
+        <small class="text-muted">{{ solicitud.sucursal.nombre }}</small>
+      </div>
+      <div class="card-body p-4">
+        <div class="alert alert-info rounded-3 mb-4">
+          <i class="fa-solid fa-info-circle me-2"></i>
+          Al cambiar el estado a <strong>Despachada</strong>, se generarán automáticamente movimientos de egreso en el inventario.
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Nuevo Estado *</label>
+            {{ form.estado }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Observación</label>
+            {{ form.observacion }}
+          </div>
+          {% if form.errors %}
+            <div class="alert alert-danger">{{ form.errors }}</div>
+          {% endif %}
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-mp-primary"><i class="fa-solid fa-check me-1"></i> Actualizar Estado</button>
+            <a href="{% url 'solicitud_detail' solicitud.pk %}" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

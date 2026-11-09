@@ -23,26 +23,28 @@
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="stat-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
-                <span class="text-muted fw-semibold small text-uppercase">Unidades en Stock</span>
-                <div class="icon-box bg-success-subtle text-success">
-                    <i class="fa-solid fa-cubes"></i>
-                </div>
-            </div>
-            <h3 class="fw-bold mb-1 text-dark">{{ total_stock|intcomma }}</h3>
-            <span class="text-muted small">Total unidades físicas</span>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="stat-card">
-            <div class="d-flex align-items-center justify-content-between mb-3">
                 <span class="text-muted fw-semibold small text-uppercase">Valor Total Inventario</span>
                 <div class="icon-box bg-indigo-subtle text-indigo" style="background-color: #e0e7ff; color: #4338ca;">
                     <i class="fa-solid fa-sack-dollar"></i>
                 </div>
             </div>
             <h3 class="fw-bold mb-1 text-dark">${{ valor_inventario|intcomma }}</h3>
-            <span class="text-muted small">Valoración monetaria</span>
+            <span class="text-muted small">Valoración (stock &times; precio)</span>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="text-muted fw-semibold small text-uppercase">Solicitudes Pendientes</span>
+                <div class="icon-box bg-warning-subtle text-warning">
+                    <i class="fa-solid fa-clipboard-question"></i>
+                </div>
+            </div>
+            <h3 class="fw-bold mb-1 text-dark">{{ solicitudes_pendientes }}</h3>
+            <a href="{% url 'solicitud_list' %}?estado=PENDIENTE" class="text-warning small fw-semibold text-decoration-none">
+                {{ total_solicitudes }} solicitudes en total <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
         </div>
     </div>
 
@@ -50,12 +52,60 @@
         <div class="stat-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <span class="text-muted fw-semibold small text-uppercase">Alertas de Stock</span>
-                <div class="icon-box bg-warning-subtle text-warning">
+                <div class="icon-box bg-danger-subtle text-danger">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
             </div>
             <h3 class="fw-bold mb-1 text-dark">{{ productos_bajo_stock }}</h3>
             <span class="text-danger small fw-semibold">{{ productos_sin_stock }} agotados</span>
+        </div>
+    </div>
+</div>
+
+<!-- Secondary Stats Row -->
+<div class="row g-4 mb-4">
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center gap-3">
+            <div class="icon-box bg-info-subtle text-info rounded-3">
+                <i class="fa-solid fa-building"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0">{{ total_sucursales }}</h5>
+                <small class="text-muted">Sucursales Activas</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center gap-3">
+            <div class="icon-box bg-success-subtle text-success rounded-3">
+                <i class="fa-solid fa-truck"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0">{{ total_proveedores }}</h5>
+                <small class="text-muted">Proveedores Vinculados</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center gap-3">
+            <div class="icon-box bg-primary-subtle text-primary rounded-3">
+                <i class="fa-solid fa-cubes"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0">{{ total_stock|intcomma }}</h5>
+                <small class="text-muted">Unidades Físicas</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center gap-3">
+            <div class="icon-box bg-dark-subtle text-dark rounded-3">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0">20 Reportes</h5>
+                <a href="{% url 'reportes_index' %}" class="small text-decoration-none fw-semibold">Consultar módulo &rarr;</a>
+            </div>
         </div>
     </div>
 </div>

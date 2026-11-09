@@ -1,0 +1,56 @@
+{% extends 'bodega/base.html' %}
+{% block title %}Proveedores - Bodega{% endblock %}
+{% block page_heading %}Proveedores{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold brand-font mb-0">Proveedores</h2>
+    <small class="text-muted">{{ proveedores.count }} proveedor(es) registrado(s)</small>
+  </div>
+  <a href="{% url 'proveedor_create' %}" class="btn btn-mp-primary">
+    <i class="fa-solid fa-plus me-1"></i> Nuevo Proveedor
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-0">
+    <table class="table table-custom mb-0">
+      <thead>
+        <tr>
+          <th>Nombre</th><th>RUT</th><th>Contacto</th><th>Teléfono</th><th>Productos</th><th>Estado</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prov in proveedores %}
+        <tr>
+          <td class="fw-semibold">{{ prov.nombre }}</td>
+          <td>{{ prov.rut|default:"-" }}</td>
+          <td>{{ prov.contacto|default:"-" }}</td>
+          <td>{{ prov.telefono|default:"-" }}</td>
+          <td><span class="badge bg-primary rounded-pill">{{ prov.num_productos }}</span></td>
+          <td>
+            {% if prov.activo %}
+              <span class="badge badge-stock-normal">Activo</span>
+            {% else %}
+              <span class="badge badge-stock-agotado">Inactivo</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'proveedor_update' prov.pk %}" class="btn btn-sm btn-outline-secondary me-1">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'proveedor_delete' prov.pk %}" class="btn btn-sm btn-outline-danger">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center text-muted py-4">No hay proveedores registrados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+

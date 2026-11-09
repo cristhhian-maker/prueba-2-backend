@@ -1,0 +1,50 @@
+{% extends 'bodega/base.html' %}
+{% block title %}Reporte 16 - Salidas Último Mes{% endblock %}
+{% block page_heading %}Reporte #16: Unidades Salidas de Bodega en el Último Mes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <span class="badge bg-dark mb-1">Nivel Avanzado</span>
+    <h3 class="fw-bold brand-font mb-0">¿Cuántas unidades de cada producto han salido de la bodega durante el último mes?</h3>
+    <small class="text-muted">Registro consolidado de egresos y despachos registrados en los últimos 30 días (desde {{ hace_un_mes|date:"d/m/Y" }})</small>
+  </div>
+  <a href="{% url 'reportes_index' %}" class="btn btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i> Volver a Reportes
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-custom mb-0">
+        <thead>
+          <tr>
+            <th style="width: 80px;">#</th>
+            <th>SKU</th>
+            <th>Producto</th>
+            <th class="text-end">Unidades Salidas (Egresos)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in movimientos %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="fw-semibold">{{ m.producto__sku }}</td>
+            <td class="fw-bold">{{ m.producto__nombre }}</td>
+            <td class="text-end">
+              <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">
+                <i class="fa-solid fa-arrow-down me-1"></i> {{ m.total_salidas }} unidades
+              </span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="text-center text-muted py-4">No se registran movimientos de salida en los últimos 30 días.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

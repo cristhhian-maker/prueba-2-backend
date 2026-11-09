@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-iw4+gfl_xzuaxv0as&dy(uzw5=!^plum8t)&jg1-lie4&&=c6w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'bodega',
+    'mathfilters',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

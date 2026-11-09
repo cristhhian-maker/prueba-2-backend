@@ -63,6 +63,7 @@
                 <thead>
                     <tr>
                         <th>SKU</th>
+                        <th></th>
                         <th>Producto</th>
                         <th>Categoría</th>
                         <th>Marca</th>
@@ -76,6 +77,18 @@
                     {% for p in page_obj %}
                         <tr>
                             <td class="fw-bold text-secondary">{{ p.sku }}</td>
+                            <td style="width: 56px;">
+                                {% if p.imagen %}
+                                <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}"
+                                     class="rounded-3 border"
+                                     style="width:48px; height:48px; object-fit:cover;">
+                                {% else %}
+                                <div class="rounded-3 border bg-light d-flex align-items-center justify-content-center"
+                                     style="width:48px; height:48px;">
+                                    <i class="fa-solid fa-guitar text-muted opacity-50"></i>
+                                </div>
+                                {% endif %}
+                            </td>
                             <td>
                                 <a href="{% url 'producto_detail' p.pk %}" class="text-decoration-none fw-semibold text-dark hover-primary">
                                     {{ p.nombre }}
@@ -116,7 +129,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
+                            <td colspan="9" class="text-center py-5 text-muted">
                                 <i class="fa-solid fa-box-open fa-3x mb-3 text-secondary opacity-50 d-block"></i>
                                 No se encontraron productos. Registra el primero o ajusta los filtros.
                             </td>

@@ -1,0 +1,293 @@
+{% extends 'bodega/base.html' %}
+{% block title %}Reportes de Bodega{% endblock %}
+{% block page_heading %}Módulo de Reportes{% endblock %}
+
+{% block extra_css %}
+<style>
+  .report-card { transition: all .2s; border:1px solid #e2e8f0; }
+  .report-card:hover { transform: translateY(-3px); box-shadow:0 10px 20px rgba(0,0,0,0.06); border-color:#6366f1; }
+  .badge-basico { background:#e0f2fe; color:#0369a1; }
+  .badge-intermedio { background:#fef3c7; color:#b45309; }
+  .badge-avanzado { background:#f3e8ff; color:#7e22ce; }
+  .badge-analisis { background:#dcfce7; color:#15803d; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <h2 class="fw-bold brand-font mb-1">Centro de Reportes del Sistema de Bodega</h2>
+  <p class="text-muted">20 reportes que responden preguntas clave sobre productos, proveedores, sucursales, solicitudes y movimientos.</p>
+</div>
+
+<!-- Nivel Básico -->
+<div class="mb-4">
+  <h5 class="fw-bold text-uppercase text-secondary mb-3" style="letter-spacing:.08em;font-size:.85rem;">
+    <i class="fa-solid fa-circle-check text-info me-2"></i> Nivel Básico (1 - 5)
+  </h5>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #1</span>
+          <span class="badge badge-basico">Básico</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son todos los productos registrados en la bodega?</h6>
+        <p class="text-muted small mb-3">Listado completo con SKU, categoría, marca, precio y stock.</p>
+        <a href="{% url 'reporte_1' %}" class="btn btn-outline-primary btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #2</span>
+          <span class="badge badge-basico">Básico</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué productos pertenecen a una categoría seleccionada?</h6>
+        <p class="text-muted small mb-3">Filtro dinámico de productos por categoría.</p>
+        <a href="{% url 'reporte_2' %}" class="btn btn-outline-primary btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #3</span>
+          <span class="badge badge-basico">Básico</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son los productos con stock bajo el mínimo?</h6>
+        <p class="text-muted small mb-3">Detección de existencias críticas (stock &le; stock_minimo).</p>
+        <a href="{% url 'reporte_3' %}" class="btn btn-outline-primary btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #4</span>
+          <span class="badge badge-basico">Básico</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son los 10 productos con mayor precio?</h6>
+        <p class="text-muted small mb-3">Ranking top 10 productos más costosos.</p>
+        <a href="{% url 'reporte_4' %}" class="btn btn-outline-primary btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #5</span>
+          <span class="badge badge-basico">Básico</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuántos productos existen registrados por categoría?</h6>
+        <p class="text-muted small mb-3">Conteo agregado de productos por categoría.</p>
+        <a href="{% url 'reporte_5' %}" class="btn btn-outline-primary btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nivel Intermedio -->
+<div class="mb-4">
+  <h5 class="fw-bold text-uppercase text-secondary mb-3" style="letter-spacing:.08em;font-size:.85rem;">
+    <i class="fa-solid fa-circle-check text-warning me-2"></i> Nivel Intermedio (6 - 12)
+  </h5>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #6</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué productos suministra un proveedor seleccionado?</h6>
+        <p class="text-muted small mb-3">Catálogo por empresa proveedora.</p>
+        <a href="{% url 'reporte_6' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #7</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son las solicitudes realizadas por una sucursal específica?</h6>
+        <p class="text-muted small mb-3">Historial de solicitudes por sucursal.</p>
+        <a href="{% url 'reporte_7' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #8</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué productos y cantidades contiene una solicitud seleccionada?</h6>
+        <p class="text-muted small mb-3">Detalle desglosado de una solicitud.</p>
+        <a href="{% url 'reporte_8' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #9</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuántas solicitudes se encuentran pendientes, aprobadas, rechazadas o despachadas?</h6>
+        <p class="text-muted small mb-3">Distribución por estado de requerimiento.</p>
+        <a href="{% url 'reporte_9' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #10</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son las solicitudes realizadas durante un rango de fechas?</h6>
+        <p class="text-muted small mb-3">Búsqueda temporal de requerimientos.</p>
+        <a href="{% url 'reporte_10' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #11</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son las 5 sucursales que han solicitado mayor cantidad de productos?</h6>
+        <p class="text-muted small mb-3">Ranking top 5 sucursales más demandantes.</p>
+        <a href="{% url 'reporte_11' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #12</span>
+          <span class="badge badge-intermedio">Intermedio</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son los productos más solicitados por las sucursales?</h6>
+        <p class="text-muted small mb-3">Ranking de productos por unidades pedidas.</p>
+        <a href="{% url 'reporte_12' %}" class="btn btn-outline-warning btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nivel Avanzado -->
+<div class="mb-4">
+  <h5 class="fw-bold text-uppercase text-secondary mb-3" style="letter-spacing:.08em;font-size:.85rem;">
+    <i class="fa-solid fa-circle-check text-purple me-2"></i> Nivel Avanzado (13 - 17)
+  </h5>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #13</span>
+          <span class="badge badge-avanzado">Avanzado</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué proveedor suministra la mayor cantidad de productos diferentes?</h6>
+        <p class="text-muted small mb-3">Ranking de diversidad de catálogo por proveedor.</p>
+        <a href="{% url 'reporte_13' %}" class="btn btn-outline-dark btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #14</span>
+          <span class="badge badge-avanzado">Avanzado</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuál es el valor total del inventario (precio &times; stock)?</h6>
+        <p class="text-muted small mb-3">Valoración económica global del inventario.</p>
+        <a href="{% url 'reporte_14' %}" class="btn btn-outline-dark btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #15</span>
+          <span class="badge badge-avanzado">Avanzado</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué productos no han sido solicitados por ninguna sucursal?</h6>
+        <p class="text-muted small mb-3">Detección de productos sin rotación.</p>
+        <a href="{% url 'reporte_15' %}" class="btn btn-outline-dark btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #16</span>
+          <span class="badge badge-avanzado">Avanzado</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuántas unidades de cada producto han salido durante el último mes?</h6>
+        <p class="text-muted small mb-3">Movimientos de egreso de los últimos 30 días.</p>
+        <a href="{% url 'reporte_16' %}" class="btn btn-outline-dark btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #17</span>
+          <span class="badge badge-avanzado">Avanzado</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué sucursales tienen solicitudes pendientes de atención?</h6>
+        <p class="text-muted small mb-3">Identificación de sucursales en espera.</p>
+        <a href="{% url 'reporte_17' %}" class="btn btn-outline-dark btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nivel Análisis -->
+<div class="mb-4">
+  <h5 class="fw-bold text-uppercase text-secondary mb-3" style="letter-spacing:.08em;font-size:.85rem;">
+    <i class="fa-solid fa-circle-check text-success me-2"></i> Nivel Análisis (18 - 20)
+  </h5>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #18</span>
+          <span class="badge badge-analisis">Análisis</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Qué categoría concentra el mayor valor económico del inventario?</h6>
+        <p class="text-muted small mb-3">Ranking de categorías por capital inmovilizado.</p>
+        <a href="{% url 'reporte_18' %}" class="btn btn-outline-success btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #19</span>
+          <span class="badge badge-analisis">Análisis</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuál es el promedio de productos solicitados por solicitud?</h6>
+        <p class="text-muted small mb-3">Promedio general y desglose por solicitud.</p>
+        <a href="{% url 'reporte_19' %}" class="btn btn-outline-success btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card report-card rounded-4 p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <span class="badge bg-secondary">Reporte #20</span>
+          <span class="badge badge-analisis">Análisis</span>
+        </div>
+        <h6 class="fw-bold mb-2">¿Cuáles son los 5 productos más solicitados en un período seleccionado?</h6>
+        <p class="text-muted small mb-3">Top 5 productos con mayor demanda en fechas parametrizadas.</p>
+        <a href="{% url 'reporte_20' %}" class="btn btn-outline-success btn-sm mt-auto">Ver Reporte</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

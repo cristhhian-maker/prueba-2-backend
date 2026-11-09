@@ -1,0 +1,80 @@
+{% extends 'bodega/base.html' %}
+{% block title %}{{ titulo }} - Bodega{% endblock %}
+{% block page_heading %}{{ titulo }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .formset-row { background:#f8fafc; border-radius:12px; padding:1rem; margin-bottom:.75rem; border:1px solid #e2e8f0; }
+  .delete-row { color:#dc3545; cursor:pointer; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+        <h4 class="fw-bold brand-font mb-0">{{ titulo }}</h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %}
+
+          <h5 class="fw-semibold mb-3">Datos de la Solicitud</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Sucursal *</label>
+              {{ form.sucursal }}
+              {% if form.sucursal.errors %}<div class="text-danger small">{{ form.sucursal.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Observación</label>
+              {{ form.observacion }}
+            </div>
+          </div>
+
+          <h5 class="fw-semibold mb-3">Productos Solicitados</h5>
+          {{ formset.management_form }}
+
+          <div id="formset-container">
+            {% for detalle_form in formset %}
+            <div class="formset-row row g-2 align-items-center">
+              {% for hidden in detalle_form.hidden_fields %}{{ hidden }}{% endfor %}
+              <div class="col-md-7">
+                <label class="form-label fw-semibold small">Producto</label>
+                {{ detalle_form.producto }}
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small">Cantidad</label>
+                {{ detalle_form.cantidad }}
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                {% if detalle_form.DELETE %}
+                  <div class="form-check mt-3">
+                    {{ detalle_form.DELETE }}
+                    <label class="form-check-label text-danger small">Eliminar</label>
+                  </div>
+                {% endif %}
+              </div>
+              {% if detalle_form.errors %}
+                <div class="col-12"><small class="text-danger">{{ detalle_form.errors }}</small></div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+
+          {% if form.errors %}
+            <div class="alert alert-danger mt-3">{{ form.errors }}</div>
+          {% endif %}
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-mp-primary"><i class="fa-solid fa-floppy-disk me-1"></i> Guardar Solicitud</button>
+            <a href="{% url 'solicitud_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

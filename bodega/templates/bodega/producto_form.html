@@ -34,15 +34,20 @@
                     </div>
 
                     <div class="row g-3 mb-3">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <label class="form-label fw-semibold">Categoría *</label>
                             {{ form.categoria }}
                             {% if form.categoria.errors %}<div class="text-danger small mt-1">{{ form.categoria.errors.0 }}</div>{% endif %}
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <label class="form-label fw-semibold">Marca *</label>
                             {{ form.marca }}
                             {% if form.marca.errors %}<div class="text-danger small mt-1">{{ form.marca.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-semibold">Proveedor Asignado</label>
+                            {{ form.proveedor }}
+                            {% if form.proveedor.errors %}<div class="text-danger small mt-1">{{ form.proveedor.errors.0 }}</div>{% endif %}
                         </div>
                     </div>
 
@@ -66,6 +71,17 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Imagen del Producto</label>
+                        {% if producto.imagen %}
+                        <div class="d-flex align-items-center gap-3 mb-2 p-3 bg-light rounded-3 border">
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}"
+                                 class="rounded-3 border"
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                            <div>
+                                <p class="mb-1 small fw-semibold text-muted">Imagen actual</p>
+                                <p class="mb-0 small text-secondary">Selecciona un nuevo archivo para reemplazarla.</p>
+                            </div>
+                        </div>
+                        {% endif %}
                         {{ form.imagen }}
                         {% if form.imagen.errors %}<div class="text-danger small mt-1">{{ form.imagen.errors.0 }}</div>{% endif %}
                     </div>

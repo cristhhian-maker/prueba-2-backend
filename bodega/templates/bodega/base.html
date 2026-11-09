@@ -208,9 +208,11 @@
                 <span>Catálogo</span>
             </a>
 
+            <small class="text-uppercase text-secondary px-3 d-block mt-3 mb-1" style="font-size:0.68rem;letter-spacing:.08em;">Inventario</small>
+
             <a href="{% url 'producto_list' %}" class="nav-link-item {% if 'producto' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="fa-solid fa-boxes-stacked"></i>
-                <span>Inventario</span>
+                <span>Productos</span>
             </a>
 
             <a href="{% url 'movimiento_list' %}" class="nav-link-item {% if 'movimiento' in request.resolver_match.url_name %}active{% endif %}">
@@ -226,6 +228,30 @@
             <a href="{% url 'marca_list' %}" class="nav-link-item {% if request.resolver_match.url_name == 'marca_list' %}active{% endif %}">
                 <i class="fa-solid fa-copyright"></i>
                 <span>Marcas</span>
+            </a>
+
+            <small class="text-uppercase text-secondary px-3 d-block mt-3 mb-1" style="font-size:0.68rem;letter-spacing:.08em;">Gestión</small>
+
+            <a href="{% url 'proveedor_list' %}" class="nav-link-item {% if 'proveedor' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fa-solid fa-truck"></i>
+                <span>Proveedores</span>
+            </a>
+
+            <a href="{% url 'sucursal_list' %}" class="nav-link-item {% if 'sucursal' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fa-solid fa-building"></i>
+                <span>Sucursales</span>
+            </a>
+
+            <a href="{% url 'solicitud_list' %}" class="nav-link-item {% if 'solicitud' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Solicitudes</span>
+            </a>
+
+            <small class="text-uppercase text-secondary px-3 d-block mt-3 mb-1" style="font-size:0.68rem;letter-spacing:.08em;">Reportes</small>
+
+            <a href="{% url 'reportes_index' %}" class="nav-link-item {% if 'reporte' in request.resolver_match.url_name %}active{% endif %}">
+                <i class="fa-solid fa-chart-bar"></i>
+                <span>Reportes (20)</span>
             </a>
 
             <hr style="border-color: rgba(255,255,255,0.1);" class="my-3 mx-3">

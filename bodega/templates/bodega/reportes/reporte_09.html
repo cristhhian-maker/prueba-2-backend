@@ -1,0 +1,75 @@
+{% extends 'bodega/base.html' %}
+{% block title %}Reporte 9 - Solicitudes por Estado{% endblock %}
+{% block page_heading %}Reporte #9: Solicitudes por Estado{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <span class="badge bg-warning text-dark mb-1">Nivel Intermedio</span>
+    <h3 class="fw-bold brand-font mb-0">¿Cuántas solicitudes se encuentran pendientes, aprobadas, rechazadas o despachadas?</h3>
+    <small class="text-muted">Balance operativo del flujo de solicitudes en el sistema de bodega</small>
+  </div>
+  <a href="{% url 'reportes_index' %}" class="btn btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i> Volver a Reportes
+  </a>
+</div>
+
+<div class="row g-4 mb-4">
+  {% for item in resumen %}
+  <div class="col-md-3">
+    <div class="stat-card h-100">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <span class="text-muted text-uppercase fw-semibold" style="font-size: 0.8rem;">{{ item.estado_display }}</span>
+          <h2 class="fw-bold brand-font mt-2 mb-0">{{ item.total }}</h2>
+        </div>
+        <div class="icon-box {% if item.estado == 'PENDIENTE' %}bg-warning-subtle text-warning{% elif item.estado == 'APROBADA' %}bg-success-subtle text-success{% elif item.estado == 'RECHAZADA' %}bg-danger-subtle text-danger{% else %}bg-primary-subtle text-primary{% endif %}">
+          {% if item.estado == 'PENDIENTE' %}<i class="fa-solid fa-clock"></i>
+          {% elif item.estado == 'APROBADA' %}<i class="fa-solid fa-check"></i>
+          {% elif item.estado == 'RECHAZADA' %}<i class="fa-solid fa-xmark"></i>
+          {% else %}<i class="fa-solid fa-truck-fast"></i>{% endif %}
+        </div>
+      </div>
+      <a href="{% url 'solicitud_list' %}?estado={{ item.estado }}" class="small text-decoration-none fw-semibold">
+        Ver listado de estas solicitudes <i class="fa-solid fa-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-header bg-white border-0 pt-4 px-4">
+    <h5 class="fw-bold mb-0">Resumen Consolidado (Total: {{ total }} solicitudes)</h5>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-custom mb-0">
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Total Solicitudes</th>
+            <th>Porcentaje del Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in resumen %}
+          <tr>
+            <td class="fw-bold">{{ item.estado_display }}</td>
+            <td class="fw-semibold">{{ item.total }}</td>
+            <td style="width: 40%;">
+              <div class="progress" style="height: 12px;">
+                <div class="progress-bar {% if item.estado == 'PENDIENTE' %}bg-warning{% elif item.estado == 'APROBADA' %}bg-success{% elif item.estado == 'RECHAZADA' %}bg-danger{% else %}bg-primary{% endif %}" role="progressbar" style="width: {% if total > 0 %}{% widthratio item.total total 100 %}%{% else %}0%{% endif %};">
+                  {% if total > 0 %}{% widthratio item.total total 100 %}%{% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

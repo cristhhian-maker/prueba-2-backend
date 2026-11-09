@@ -1,0 +1,86 @@
+{% extends 'bodega/base.html' %}
+{% load humanize %}
+{% block title %}Reporte 2 - Productos por Categoría{% endblock %}
+{% block page_heading %}Reporte #2: Productos por Categoría{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <span class="badge bg-primary mb-1">Nivel Básico</span>
+    <h3 class="fw-bold brand-font mb-0">¿Qué productos pertenecen a una categoría seleccionada?</h3>
+    <small class="text-muted">Filtra y visualiza el inventario según su categoría correspondiente</small>
+  </div>
+  <a href="{% url 'reportes_index' %}" class="btn btn-outline-secondary">
+    <i class="fa-solid fa-arrow-left me-1"></i> Volver a Reportes
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+  <div class="card-body p-4">
+    <form method="get" class="row g-3 align-items-end">
+      <div class="col-md-8">
+        <label class="form-label fw-semibold">Seleccionar Categoría</label>
+        <select name="categoria" class="form-select" required>
+          <option value="">-- Elija una categoría --</option>
+          {% for c in categorias %}
+            <option value="{{ c.pk }}" {% if cat_id == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-mp-primary w-100">
+          <i class="fa-solid fa-search me-1"></i> Consultar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if categoria_sel %}
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+    <h5 class="fw-bold mb-0">Categoría: <span class="text-primary">{{ categoria_sel.nombre }}</span></h5>
+    <span class="badge bg-secondary">{{ productos.count }} producto(s)</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-custom mb-0">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Stock Actual</th>
+            <th>Stock Mínimo</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in productos %}
+          <tr>
+            <td class="fw-semibold">{{ p.sku }}</td>
+            <td class="fw-bold">{{ p.nombre }}</td>
+            <td>{{ p.marca.nombre }}</td>
+            <td>${{ p.precio|intcomma }}</td>
+            <td>{{ p.stock }}</td>
+            <td>{{ p.stock_minimo }}</td>
+            <td>
+              {% if p.stock <= p.stock_minimo %}
+                <span class="badge badge-stock-bajo">Bajo Stock</span>
+              {% else %}
+                <span class="badge badge-stock-normal">Normal</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center text-muted py-4">No hay productos en esta categoría.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
